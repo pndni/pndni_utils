@@ -1,0 +1,5 @@
+ID	lh_bankssts_area	lh_caudalanteriorcingulate_area	lh_caudalmiddlefrontal_area	aseg_mean_Left-Lateral-Ventricle	aseg_mean_Left-Inf-Lat-Vent	aseg_mean_Left-Cerebellum-White-Matter	aseg_volume_Left-Lateral-Ventricle	aseg_volume_Left-Inf-Lat-Vent	aseg_volume_Left-Cerebellum-White-Matter
+1	1.0	2.0	3.0	10	11	12	19.0	20.0	21.0
+2	4.0	5.0	6.0	16	17	18	22.0	23.0	24.0
+3	7.0	8.0	9.0	13	14	15	25.0	26.0	27.0
+4				19	20	21			

@@ -1,0 +1,4 @@
+Measure:volume	Left-Lateral-Ventricle	Left-Inf-Lat-Vent	Left-Cerebellum-White-Matter
+1	19	20	21
+2	22	23	24
+3	25	26	27
