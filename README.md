@@ -1,23 +1,82 @@
 Installation
 ============
 
+## Python
 1. download source `git clone https://github.com/pndni/pndni_utils.git`
 2. `pip install -e pndni_utils` (Note, if you're not using a virtual
    environment, you will probably need to use
    `pip install --user -e pndni_utils`)
    
+## Bash
+1. download source `git clone https://github.com/pndni/pndni_utils.git`
+2. `export PATH=$PATH:$PWD/pndni_utils/bash` (or add this command to your `.bashrc`
+   to make persistent, with $PWD expanded appropriately)
    
 Command line utilities
 ======================
 
-## fscombine
+## Python
+### fscombine
 
 `fscombine` combines data extracted with freesurfer's `asegstats2table`
 and `aparcstats2table` into one file. 
 
-### Example
+#### Example
 
 ```bash
 fscombine aparc_area_lh_small.txt aseg_mean_small.txt aseg_volume_small.txt out.txt
 ```
 
+## Bash
+## combined_dirs.sh
+
+`combine_dirs.sh` combines multiple directories. If multiple files of the same
+name exist, `combine_dirs.sh` ensures that they are equal or returns with status 1
+
+#### Example
+
+Say we have a folder organized as
+```.
+├── out-1
+│   ├── info.txt
+│   └── sub-1
+│       └── result.txt
+├── out-2
+│   ├── info.txt
+│   └── sub-2
+│       └── result.txt
+└── out-3
+    ├── info.txt
+    └── sub-3
+        └── result.txt
+```
+where all the `info.txt` are identical.
+Running
+```bash
+mkdir combined
+combine_dirs combined out*/*
+```
+results in
+```
+.
+├── combined
+│   ├── info.txt
+│   ├── sub-1
+│   │   └── result.txt
+│   ├── sub-2
+│   │   └── result.txt
+│   └── sub-3
+│       └── result.txt
+├── out-1
+│   ├── info.txt
+│   └── sub-1
+│       └── result.txt
+├── out-2
+│   ├── info.txt
+│   └── sub-2
+│       └── result.txt
+└── out-3
+    ├── info.txt
+    └── sub-3
+        └── result.txt
+```
