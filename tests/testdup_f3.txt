@@ -1,0 +1,4 @@
+testdup2	testdup
+1	101
+2	300	
+3	200

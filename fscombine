@@ -24,8 +24,10 @@ def combine_stats(inputs):
             df = dft
         else:
             duplicate_columns = df.columns.intersection(dft.columns)
-            if len(duplicate_columns) > 0:
-                raise RuntimeError('Duplicate columns {}'.format(duplicate_columns))
+            for c in duplicate_columns:
+                if not df[c].dropna().equals(dft[c].dropna()):
+                    raise RuntimeError('Duplicate column {} with different values'.format(c))
+                dft = dft.drop(c, axis='columns')
             df = df.join(dft, how='outer')
     return df
 
