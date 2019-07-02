@@ -80,3 +80,28 @@ results in
     └── sub-3
         └── result.txt
 ```
+
+## create_readme
+
+Creates a starting point readme file. Calling `create_readme file1 file2 file3` will write the following to stdout
+```yaml
+Name:
+Dataset:
+Authors:
+PI: 
+Description:
+Scripts:
+  -name: file1
+   desc:
+   md5sum: FILE1_MD5
+  -name: file2
+   desc:
+   md5sum: FILE2_MD5
+  -name: file3
+   desc:
+   md5sum: FILE3_MD5
+Outputs:
+Server:
+Notes:
+
+```
