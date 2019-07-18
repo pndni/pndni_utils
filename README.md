@@ -27,6 +27,17 @@ and `aparcstats2table` into one file.
 fscombine aparc_area_lh_small.txt aseg_mean_small.txt aseg_volume_small.txt out.txt
 ```
 
+### mnclabel2niilabel
+
+Converts a minc file to a nifti file using `mnc2nii`, then rounds all the data 
+to the nearest integer and converts the nifti file to uint8. Checks that
+all the values are within 0.1 of the nearest integer.
+
+#### Example
+```bash
+mnclabel2niilabel input.mnc output.nii
+```
+
 ## Bash
 ## combined_dirs.sh
 
