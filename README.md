@@ -62,7 +62,7 @@ combinelabels out.nii labelfile1.nii labelfile2.nii
 will result in
 
 | out.nii label name         | Value |
-| -------------------------  | ----- |
+| -------------------------- | ----- |
 | Grey matter + left hemi.   |     1 |
 | White matter + left hemi.  |     2 |
 | Grey matter + right hemi.  |     3 |
