@@ -1,15 +1,15 @@
 Installation
 ============
 
-## Python
+## Python tools
 1. download source `git clone https://github.com/pndni/pndni_utils.git`
 2. `pip install -e pndni_utils` (Note, if you're not using a virtual
    environment, you will probably need to use
    `pip install --user -e pndni_utils`)
    
-## Bash
+## Bash tools
 1. download source `git clone https://github.com/pndni/pndni_utils.git`
-2. `export PATH=$PATH:$PWD/pndni_utils/bash` (or add this command to your `.bashrc`
+2. `export PATH=$PATH:$PWD/pndni_utils/bin` (or add this command to your `.bashrc`
    to make persistent, with $PWD expanded appropriately)
    
 Command line utilities
@@ -36,6 +36,48 @@ all the values are within 0.1 of the nearest integer.
 #### Example
 ```bash
 mnclabel2niilabel input.mnc output.nii
+
+```
+
+### combinelabels
+
+Combine multiple label files into one, where output labels are the intersection
+of the input labels. For example, if labelfile1.nii and labelfile2.nii have the following
+labels:
+
+| labelfile1.nii label name | Value |
+| ------------------------- | ----- |
+| Grey matter               |     1 |
+| White matter              |     2 |
+
+| labelfile2.nii label name | Value |
+| ------------------------- | ----- |
+| Left hemisphere           |     1 |
+| Right hemisphere          |     2 |
+
+the command
+```bash
+combinelabels out.nii labelfile1.nii labelfile2.nii
+```
+will result in
+
+| out.nii label name         | Value |
+| -------------------------  | ----- |
+| Grey matter + left hemi.   |     1 |
+| White matter + left hemi.  |     2 |
+| Grey matter + right hemi.  |     3 |
+| White matter + right hemi. |     4 |
+
+A value of 0 in any label file will result in 0 in the output.
+
+More than two label files may be used. For example
+```bash
+combinelabels out.nii labelfile1.nii labelfile2.nii labelfile3.nii
+```
+is equivalent to
+```bash
+combinelabels tmp.nii labelfile1.nii labelfile2.nii
+combinelabels out.nii tmp.nii labelfile3.nii
 ```
 
 ## Bash

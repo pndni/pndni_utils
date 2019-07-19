@@ -51,3 +51,13 @@ def test_combinelabels4(tmpdir):
     truth *= l3 > 0
     assert np.all(out == truth)
     assert out.dtype == 'uint16'
+
+        
+def test_combinelabels5(tmpdir):
+    l1 = np.array([1, 2, 3, 1, 2, 3])
+    l2 = np.array([1, 1, 1, 2, 2, 2])
+    l3 = np.array([4, 5, 4, 5, 4, 4])
+    out = _wrapper(tmpdir, [l1, l2])
+    out2 = _wrapper(tmpdir, [out, l3])
+    assert np.all(out2 == [19, 26, 21, 28, 23, 24])
+    assert out2.dtype == 'uint8'
