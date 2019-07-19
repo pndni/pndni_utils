@@ -7,7 +7,14 @@ import sys
 import tempfile
 
 
-if __name__ == '__main__':
+def _copy_forms(tmp, out):
+    aff, code = tmp.get_qform(coded=True)
+    out.set_qform(aff, code=code)
+    aff, code = tmp.get_sform(coded=True)
+    out.set_sform(aff, code=code)
+
+
+def main():
     if len(sys.argv) != 3:
         print('Usage: input output')
         sys.exit(1)
@@ -27,9 +34,12 @@ if __name__ == '__main__':
         if np.max(xf) > 255:
             print('Label values too high (> 255). exiting')
             sys.exit(1)
-        header = x.header.copy()
-        header.set_data_dtype(np.uint8)
-        niout = nibabel.Nifti1Image(xfr.astype(np.uint8), None, header)
+        niout = nibabel.Nifti1Image(xfr.astype(np.uint8), None)
+        _copy_forms(x, niout)
         niout.to_filename(output_file)
     finally:
         os.remove(tmp)
+
+
+if __name__ == '__main__':
+    main()
