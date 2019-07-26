@@ -80,8 +80,20 @@ combinelabels tmp.nii labelfile1.nii labelfile2.nii
 combinelabels out.nii tmp.nii labelfile3.nii
 ```
 
+### labels2probmaps
+
+Create probability maps for multiple label files. See `labels2probmaps --help`
+
+### swaplabels
+
+Swap/remap labels in an image. For example, to change all the values of 2 in the image to 1 and all the values of 5 to 10
+```bash
+swaplabels "2: 1, 5: 10" input.nii output.nii
+```
+Any unspecified value will be set to 0.
+
 ## Bash
-## combined_dirs.sh
+### combined_dirs.sh
 
 `combine_dirs.sh` combines multiple directories. If multiple files of the same
 name exist, `combine_dirs.sh` ensures that they are equal or returns with status 1
