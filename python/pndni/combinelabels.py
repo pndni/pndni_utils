@@ -3,14 +3,7 @@ import argparse
 from functools import reduce
 import nibabel
 import numpy as np
-
-
-def _copy_forms(imagefile, out):
-    tmp = nibabel.load(imagefile)
-    aff, code = tmp.get_qform(coded=True)
-    out.set_qform(aff, code=code)
-    aff, code = tmp.get_sform(coded=True)
-    out.set_sform(aff, code=code)
+from .utils import safeintload, copy_forms
 
 
 def combine2labels(l1, l2):
@@ -19,27 +12,18 @@ def combine2labels(l1, l2):
     return out
 
 
-def _saveload(file_):
-    x = np.asarray(nibabel.load(file_).dataobj)
-    xc = x.astype('uint32', copy=False)
-    if xc is not x:
-        if not np.all(x == xc):
-            raise ValueError('input image contained non integer values or values < 0')
-    return xc
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('output_file', type=str)
     input_files_help = ("input label files. each image must be of integer values >= 0")
     parser.add_argument('input_files', type=str, nargs='+', help=input_files_help)
     args = parser.parse_args()
-    label_images = (_saveload(file_) for file_ in args.input_files)
+    label_images = (safeintload(file_) for file_ in args.input_files)
     out = reduce(combine2labels, label_images)
     # reduce to smallest type possible
     out = out.astype(np.min_scalar_type(out.max()), copy=False)
     outnifti = nibabel.Nifti1Image(out, None)
-    _copy_forms(args.input_files[0], outnifti)
+    copy_forms(nibabel.load(args.input_files[0]), outnifti)
     outnifti.to_filename(args.output_file)
 
 

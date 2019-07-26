@@ -1,4 +1,3 @@
-from itertools import product
 import subprocess
 import nibabel
 import numpy as np

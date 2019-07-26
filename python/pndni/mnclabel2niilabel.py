@@ -31,10 +31,8 @@ def main():
             print(np.max(np.abs(xf - xfr)))
             print('input image values not close enough to integers. exiting')
             sys.exit(1)
-        if np.max(xf) > 255:
-            print('Label values too high (> 255). exiting')
-            sys.exit(1)
-        niout = nibabel.Nifti1Image(xfr.astype(np.uint8), None)
+        outtype = np.min_scalar_type(int(np.max(xfr)))
+        niout = nibabel.Nifti1Image(xfr.astype(outtype), None)
         _copy_forms(x, niout)
         niout.to_filename(output_file)
     finally:
