@@ -92,6 +92,15 @@ swaplabels "2: 1, 5: 10" input.nii output.nii
 ```
 Any unspecified value will be set to 0.
 
+### flattenhtml
+
+Convert an html file with dependent png images into a flat file (i.e., embed those images into the html file). Currently only
+png images are supported, and any other image format will cause an error.
+
+```bash
+flattenhtml input.html > output.html
+```
+
 ## Bash
 ### combined_dirs.sh
 

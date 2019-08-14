@@ -20,6 +20,7 @@ setup(
             'combinelabels = pndni.combinelabels:main',
             'labels2probmaps = pndni.labels2probmaps:main',
             'swaplabels = pndni.swaplabels:main',
+            'flattenhtml = pndni.flattenhtml:main',
         ],
     },
 )
