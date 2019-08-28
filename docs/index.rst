@@ -69,8 +69,8 @@ Running
 
 .. code-block:: bash
 
-mkdir combined
-combine_dirs combined out*/*
+    mkdir combined
+    combine_dirs combined out*/*
 
 results in::
 
