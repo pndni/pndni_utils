@@ -4,3 +4,11 @@ sphinx:
   configuration: docs/conf.py
 
 formats: all
+
+python:
+  version: 3.7
+  install:
+    - method: pip
+      path: .
+    - method: pip
+      path: sphinx-argparse
