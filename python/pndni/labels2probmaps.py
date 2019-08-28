@@ -48,16 +48,27 @@ def calc_probmaps(input_files, labels=None, bids_labels=False):
     return probmaps
 
     
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('out_template', type=str)
-    parser.add_argument('input_file', type=str, nargs='+')
-    parser.add_argument('--labels', type=int, nargs='*', help='Labels to use for probability map calculation. If not specified use all labels')
+def get_parser():
+    parser = argparse.ArgumentParser(description='Create probability maps from a list of segmented files.')
+    parser.add_argument('out_template', type=str, help='Template for output files. Must contain "{label}", which will '
+                                                       'be replaced with the label index for that probability map '
+                                                       '(or an anatomical label if --bids_labels is used).')
+    parser.add_argument('input_file', type=str, nargs='+', help='List of input files. Must be integer images with '
+                                                                'values >= 0.')
+    parser.add_argument('--labels', type=int, nargs='*', help='Calculate probability maps for these labels. '
+                                                              'If not specified, use all labels')
     parser.add_argument('--bids_labels', action='store_true',
-                        help='Assume label numbers correspond to then standard anatomical labels in BEP011'
-                             'use "labels2probmap --show_bids_labels" for a list')
-    parser.add_argument('--show_bids_labels', action='store_true', help='show the standard bids labels from BEP011')
-    args = parser.parse_args()
+                        help='Assume label numbers correspond to the standard anatomical labels in '
+                             '`BEP011 <https://docs.google.com/document/d/1YG2g4UkEio4t_STIBOqYOwneLEs1emHIXbGKynx7V0Y>`_. '
+                             'use "labels2probmap --show_bids_labels" for a list.')
+    parser.add_argument('--show_bids_labels', action='store_true',
+                        help='show the standard bids labels from '
+                             '`BEP011 <https://docs.google.com/document/d/1YG2g4UkEio4t_STIBOqYOwneLEs1emHIXbGKynx7V0Y>`_. ')
+    return parser
+
+
+def main():
+    args = get_parser().parse_args()
     if args.show_bids_labels:
         for i, (fullname, abbr) in enumerate(BIDS_LABELS):
             print(f'{i}\t{fullname}\t{abbr}')

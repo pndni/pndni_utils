@@ -1,5 +1,5 @@
+import argparse
 from html.parser import HTMLParser
-import sys
 from pathlib import Path
 import base64
 
@@ -41,12 +41,27 @@ class FlattenImages(HTMLParser):
         print(f'<?{data}>')
 
 
+def get_parser():
+    parser = argparse.ArgumentParser(description="""
+Convert an html file with dependent png images into a flat file (i.e., embed those images into the html file). Currently only
+png images are supported, and any other image format will cause an error.
+
+.. code-block:: bash
+
+   flattenhtml input.html > output.html
+
+""")
+    parser.add_argument('input_file', type=str, help='Input html file.')
+    return parser
+
+
 def main():
-    htmldir = Path(sys.argv[1]).parent
-    parser = FlattenImages(htmldir)
-    with open(sys.argv[1], 'r') as f:
+    args = get_parser().parse_args()
+    htmldir = Path(args.input_file).parent
+    htmlparser = FlattenImages(htmldir)
+    with open(args.input_file, 'r') as f:
         for l in f:
-            parser.feed(l)
+            htmlparser.feed(l)
 
 
 if __name__ == '__main__':

@@ -12,12 +12,65 @@ def combine2labels(l1, l2):
     return out
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('output_file', type=str)
+def get_parser():
+    parser = argparse.ArgumentParser(description="""Combine multiple label files into one, where output labels are the intersection
+of the input labels. For example, if labelfile1.nii and labelfile2.nii have the following
+labels:
+
+========================= =====
+labelfile1.nii label name Value
+========================= =====
+Grey matter                   1
+White matter                  2
+========================= =====
+
+========================= =====
+labelfile2.nii label name Value
+========================= =====
+Left hemisphere               1
+Right hemisphere              2
+========================= =====
+
+the command
+
+.. code-block:: bash
+
+   combinelabels out.nii labelfile1.nii labelfile2.nii
+
+will result in
+
+========================== =====
+out.nii label name         Value
+========================== =====
+Grey matter + left hemi.       1
+White matter + left hemi.      2
+Grey matter + right hemi.      3
+White matter + right hemi.     4
+========================== =====
+
+A value of 0 in any label file will result in 0 in the output.
+
+More than two label files may be used. For example
+
+.. code-block:: bash
+
+   combinelabels out.nii labelfile1.nii labelfile2.nii labelfile3.nii
+
+is equivalent to
+    
+.. code-block:: bash
+
+   combinelabels tmp.nii labelfile1.nii labelfile2.nii
+   combinelabels out.nii tmp.nii labelfile3.nii
+""")
+    parser.add_argument('output_file', type=str, help='Output file name')
     input_files_help = ("input label files. each image must be of integer values >= 0")
     parser.add_argument('input_files', type=str, nargs='+', help=input_files_help)
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = get_parser().parse_args()
     label_images = (safeintload(file_) for file_ in args.input_files)
     out = reduce(combine2labels, label_images)
     # reduce to smallest type possible

@@ -32,13 +32,19 @@ def combine_stats(inputs):
     return df
 
 
-def combine_stats_cmd():
-    parser = argparse.ArgumentParser(description='Combine FreeSurfer stats files')
+def get_parser():
+    parser = argparse.ArgumentParser(description='Combine FreeSurfer files extracted '
+                                                 'with freesurfer\'s ``asegstats2table`` '
+                                                 'and ``aparcstats2table``')
     parser.add_argument('inputs', type=Path, nargs='+',
-                        help='input files generated with aparcstats2table or asegstats2table')
+                        help='input files generated with ``aparcstats2table`` or ``asegstats2table``')
     parser.add_argument('output', type=Path,
                         help='output file')
-    args = parser.parse_args()
+    return parser
+
+
+def combine_stats_cmd():
+    args = get_parser().parse_args()
     df = combine_stats(args.inputs)
     df.to_csv(args.output, sep='\t')
 
