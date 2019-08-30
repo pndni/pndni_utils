@@ -15,7 +15,7 @@ setup(
     tests_require=['pytest'],
     extra_require={
         'doc': ['Sphinx', 'sphinx-argparse', 'sphinx-rtd-theme']
-    }
+    },
     entry_points={
         'console_scripts': [
             'fscombine = pndni.fscombine:combine_stats_cmd',
