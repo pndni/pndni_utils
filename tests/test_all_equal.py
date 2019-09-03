@@ -1,6 +1,7 @@
 from pndni import all_equal
 import nibabel
 import numpy as np
+import pytest
 
 
 def test_simple():
@@ -119,3 +120,15 @@ def test_crooked_affine():
     x = nibabel.Nifti1Image(xarr, xaff)
     y = nibabel.Nifti1Image(yarr, yaff)
     assert all_equal.compare(x, y)
+
+
+def test_round():
+    x = nibabel.Nifti1Image(np.arange(24).reshape(2, 3, 4).astype(np.float), np.eye(4))
+    ydata = np.arange(24).reshape(2, 3, 4).astype(np.float)
+    ydata += (np.random.random_sample(size=(2, 3, 4)) - 0.5) * 0.9
+    y = nibabel.Nifti1Image(ydata, np.eye(4))
+    assert not all_equal.compare(x, y)
+    assert not all_equal.compare(x, y, close=True)
+    assert all_equal.compare(x, y, round_=True)
+    with pytest.raises(ValueError):
+        all_equal.compare(x, y, round_=True, close=True)

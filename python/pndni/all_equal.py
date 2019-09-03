@@ -54,6 +54,10 @@ def alleq(x, y):
     return np.all(x == y)
 
 
+def alleq_round(x, y):
+    return np.all(np.around(x) == np.around(y))
+
+
 def orient(x):
     orn = nibabel.orientations.io_orientation(x.affine)
     difforn = nibabel.orientations.ornt_transform(orn, ORIENTATION)
@@ -70,8 +74,11 @@ def get_parser():
                                                  'in world coordinates are consistent).')
     parser.add_argument('image1', help='Filename of first image to be compared')
     parser.add_argument('image2', help='Filename of first image to be compared')
-    parser.add_argument('--close', action='store_true',
-                        help='Use numpy.allclose instead of checking for strict equality.')
+    mogroup = parser.add_mutually_exclusive_group()
+    mogroup.add_argument('--close', action='store_true',
+                         help='Use numpy.allclose instead of checking for strict equality.')
+    mogroup.add_argument('--round', action='store_true',
+                         help='Round each image to the nearest int before comparing.')
     parser.add_argument('--intersection_only', action='store_true',
                         help='Only compare data where the images overlap in world coordinates')
     parser.add_argument('--round_offset', action='store_true',
@@ -92,20 +99,24 @@ def main():
     return result.status_code
 
 
-def compare(im1, im2, close=False, intersection_only=False, round_offset=False):
+def compare(im1, im2, close=False, round_=False, intersection_only=False, round_offset=False):
+    if close and round_:
+        raise ValueError('Only one of "close" and "round_" may be specified')
     checkoutside = not intersection_only
     if close:
         eqfunc = np.allclose
+    elif round_:
+        eqfunc = alleq_round
     else:
         eqfunc = alleq
-    if not (eqfunc(im1.affine, im2.affine) and im1.shape == im2.shape):
+    if not (np.allclose(im1.affine, im2.affine) and im1.shape == im2.shape):
         im1 = orient(im1)
         im2 = orient(im2)
-        if not eqfunc(im1.affine[:3, :3], im2.affine[:3, :3]):
+        if not np.allclose(im1.affine[:3, :3], im2.affine[:3, :3]):
             return AffineMismatch('Rotation and scaling do not match.')
         im1_to_im2 = np.linalg.solve(im2.affine, im1.affine)
         for axes, offset in enumerate(im1_to_im2[:3, -1]):
-            if not round_offset and not np.allclose(offset, int(np.around(offset))):  # don't use eqfunc because floating point errors can creep in here
+            if not round_offset and not np.allclose(offset, int(np.around(offset))):
                 return AffineMismatch('Images are not offset an integer amount. Use the "round_offset" flag to ignore.')
             offset = int(np.around(offset))
             if offset < 0:
