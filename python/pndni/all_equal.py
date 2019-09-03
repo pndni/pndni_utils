@@ -92,7 +92,8 @@ def get_parser():
 def main():
     args = get_parser().parse_args()
     result  = compare(nibabel.load(args.image1), nibabel.load(args.image2),
-                      close=args.close, intersection_only=args.intersection_only,
+                      close=args.close, round_=args.round,
+                      intersection_only=args.intersection_only,
                       round_offset=args.round_offset)
     if args.verbose:
         print(result)
@@ -105,10 +106,13 @@ def compare(im1, im2, close=False, round_=False, intersection_only=False, round_
     checkoutside = not intersection_only
     if close:
         eqfunc = np.allclose
+        eqfuncstr = 'np.allclose'
     elif round_:
         eqfunc = alleq_round
+        eqfuncstr = 'rounding'
     else:
         eqfunc = alleq
+        eqfuncstr = 'strict equality'
     if not (np.allclose(im1.affine, im2.affine) and im1.shape == im2.shape):
         im1 = orient(im1)
         im2 = orient(im2)
@@ -151,12 +155,12 @@ def compare(im1, im2, close=False, round_=False, intersection_only=False, round_
     if eqfunc(np.asarray(im1.dataobj), np.asarray(im2.dataobj)):
         if round_offset:
             misalignment = im1.affine[:3, -1] - im2.affine[:3, -1]
-            return Equal('Images equal (using {}). Misaligned by {}, {}, {} (in RAS).'.format('np.allclose' if close else 'strict equality', *misalignment),
+            return Equal('Images equal (using {}). Misaligned by {}, {}, {} (in RAS).'.format(eqfuncstr, *misalignment),
                          extra=misalignment)
         else:
-            return Equal('Images equal (using {}).'.format('np.allclose' if close else 'strict equality'))
+            return Equal('Images equal (using {}).'.format(eqfuncstr))
     else:
-        return NotEqual('Images NOT equal (using {})'.format('np.allclose' if close else 'strict equality'))
+        return NotEqual('Images NOT equal (using {})'.format(eqfuncstr))
                 
 
 if __name__ == '__main__':
