@@ -14,7 +14,6 @@ class _Result(object):
         self.extra = extra
         self.name = type(self).__name__  # https://www.w3resource.com/python-exercises/class-exercises/python-class-exercise-12.php
 
-
     def __repr__(self):
         extrastr = f', {self.extra}' if self.extra else ''
         return f'{self.name}({self.desc}{extrastr})'
@@ -22,7 +21,7 @@ class _Result(object):
     def __str__(self):
         return '{}{}'.format(self.name, ': ' + self.desc if self.desc else '')
 
-    
+
 class _SuccessResult(_Result):
 
     def __bool__(self):
@@ -38,8 +37,10 @@ class _ErrorResult(_Result):
 class Equal(_SuccessResult):
     status_code = 0
 
+
 class NotEqual(_ErrorResult):
     status_code = 1
+
 
 class AffineMismatch(_ErrorResult):
     status_code = 2
@@ -56,6 +57,18 @@ def alleq(x, y):
 
 def alleq_round(x, y):
     return np.all(np.around(x) == np.around(y))
+
+
+def norm(x):
+    if x.dtype.kind != 'f':
+        raise ValueError('norm may only be called on floating point types')
+    return (x - x.min()) / (x.max() - x.min())
+
+
+def norm_comp(func):
+    def _norm_alleq(x, y):
+        return func(norm(x), norm(y))
+    return _norm_alleq
 
 
 def orient(x):
@@ -85,22 +98,26 @@ def get_parser():
                         help='If the images are not offset by an integer amount, this flag '
                              'rounds the offset value. This can help if the calculated offset '
                              'is a non-integer due to rounding errors.')
+    parser.add_argument('--normalize', action='store_true',
+                        help='Remap images to the range 0-1 before comparing. '
+                             'Only valid for floating point images (otherwise raises error).')
     parser.add_argument('--verbose', action='store_true')
     return parser
 
 
 def main():
     args = get_parser().parse_args()
-    result  = compare(nibabel.load(args.image1), nibabel.load(args.image2),
-                      close=args.close, round_=args.round,
-                      intersection_only=args.intersection_only,
-                      round_offset=args.round_offset)
+    result = compare(nibabel.load(args.image1), nibabel.load(args.image2),
+                     close=args.close, round_=args.round,
+                     intersection_only=args.intersection_only,
+                     round_offset=args.round_offset,
+                     normalize=args.normalize)
     if args.verbose:
         print(result)
     return result.status_code
 
 
-def compare(im1, im2, close=False, round_=False, intersection_only=False, round_offset=False):
+def compare(im1, im2, close=False, round_=False, intersection_only=False, round_offset=False, normalize=False):
     if close and round_:
         raise ValueError('Only one of "close" and "round_" may be specified')
     checkoutside = not intersection_only
@@ -113,6 +130,9 @@ def compare(im1, im2, close=False, round_=False, intersection_only=False, round_
     else:
         eqfunc = alleq
         eqfuncstr = 'strict equality'
+    if normalize:
+        eqfunc = norm_comp(eqfunc)
+        eqfuncstr += ' (normalized)'
     if not (np.allclose(im1.affine, im2.affine) and im1.shape == im2.shape):
         im1 = orient(im1)
         im2 = orient(im2)
@@ -137,14 +157,14 @@ def compare(im1, im2, close=False, round_=False, intersection_only=False, round_
                 if checkoutside and not eqfunc(np.asarray(im1.dataobj)[tuple(slice(im2.shape[axes], None)
                                                                              if axes == i else slice(None)
                                                                              for i in range(3))],
-                              0):
+                                               0):
                     return NotEqual('Data outside the overlap is not zero. Use the "checkoutside" flag to ignore.')
                 im1 = im1.slicer[tuple(slice(None, im2.shape[axes]) if axes == i else slice(None) for i in range(3))]
             elif offset > 0:
                 if checkoutside and not eqfunc(np.asarray(im2.dataobj)[tuple(slice(im1.shape[axes], None)
                                                                              if axes == i else slice(None)
                                                                              for i in range(3))],
-                              0):
+                                               0):
                     return NotEqual('Data outside the overlap is not zero. Use the "checkoutside" flag to ignore.')
                 im2 = im2.slicer[tuple(slice(None, im1.shape[axes]) if axes == i else slice(None) for i in range(3))]
         assert np.allclose(im1.affine[:3, :3], im2.affine[:3, :3])  # use allclose in case of floating point error
@@ -161,7 +181,7 @@ def compare(im1, im2, close=False, round_=False, intersection_only=False, round_
             return Equal('Images equal (using {}).'.format(eqfuncstr))
     else:
         return NotEqual('Images NOT equal (using {})'.format(eqfuncstr))
-                
+
 
 if __name__ == '__main__':
     sys.exit(main())

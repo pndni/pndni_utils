@@ -42,7 +42,7 @@ def test_offset2():
     assert all_equal.compare(x, y, intersection_only=True)
 
 
-def test_offset2():
+def test_offset3():
     xarr = np.arange(24).reshape(2, 3, 4)
     xarr[-1:] = 0
     xarr[:, -2:] = 0
@@ -56,7 +56,7 @@ def test_offset2():
     assert all_equal.compare(x, y, intersection_only=True)
 
 
-def test_offset3():
+def test_offset4():
 
     xarr = np.array([[[0, 0, 1, 2, 3],
                       [0, 0, 4, 5, 6],
@@ -132,3 +132,27 @@ def test_round():
     assert all_equal.compare(x, y, round_=True)
     with pytest.raises(ValueError):
         all_equal.compare(x, y, round_=True, close=True)
+
+
+def test_norm():
+    x = np.arange(11) - 5
+    with pytest.raises(ValueError):
+        all_equal.norm(x)
+    assert np.all(all_equal.norm(x.astype(np.double)) == np.array([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]))
+
+
+def test_norm_comp():
+    x = (np.arange(11) - 5).astype(np.double)
+    eqfunc = all_equal.norm_comp(all_equal.alleq)
+    assert not all_equal.alleq(x, np.array([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]))
+    assert eqfunc(x, np.array([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]))
+
+
+def test_simple_normalize():
+    xi = nibabel.Nifti1Image(np.arange(24).reshape(2, 3, 4), np.eye(4))
+    x = nibabel.Nifti1Image(np.arange(24).reshape(2, 3, 4).astype(np.double) * 0.4 - 20, np.eye(4))
+    y = nibabel.Nifti1Image(np.arange(24).reshape(2, 3, 4).astype(np.double) + 2, np.eye(4))
+    with pytest.raises(ValueError):
+        all_equal.compare(xi, y, normalize=True, close=True)
+    assert not all_equal.compare(x, y, close=True)
+    assert all_equal.compare(x, y, normalize=True, close=True)
