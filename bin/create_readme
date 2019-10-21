@@ -15,9 +15,9 @@ EOF
 
 for i in "$@"
 do
-    echo "  -name: $i"
-    echo "   desc:"
-    echo "   md5sum: $(md5sum $i | cut -d ' ' -f 1)"
+    echo "  - name: $i"
+    echo "    desc:"
+    echo "    md5sum: $(md5sum $i | cut -d ' ' -f 1)"
 done
 
 cat <<EOF
