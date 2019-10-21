@@ -25,6 +25,7 @@ setup(
             'swaplabels = pndni.swaplabels:main',
             'flattenhtml = pndni.flattenhtml:main',
             'allequal = pndni.all_equal:main',
+            'forceqform = pndni.forceqform:main',
         ],
     },
 )

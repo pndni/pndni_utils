@@ -142,6 +142,14 @@ flattenhtml
    :func: get_parser
 
 
+forceqform
+==========
+.. argparse::
+   :prog: forceqform
+   :module: pndni.forceqform
+   :func: get_parser
+
+
 fscombine
 =============
 
