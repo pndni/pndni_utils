@@ -14,7 +14,7 @@ def get_parser():
     return parser
 
 
-def main(input_file, output_file):
+def forceqform(input_file, output_file):
     """
     Ensure that only qform is set. Because ANTs only uses the qform, this will
     force other applications to use the qform as well, keeping everything consistent.
@@ -43,6 +43,10 @@ def main(input_file, output_file):
     img.to_filename(str(output_file))
 
 
-if __name__ == '__main__':
+def main():
     args = get_parser().parse_args()
-    main(args.input_file, args.output_file)
+    forceqform(args.input_file, args.output_file)
+
+
+if __name__ == '__main__':
+    main()

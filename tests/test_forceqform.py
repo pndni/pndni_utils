@@ -29,10 +29,10 @@ def test_forceqform(tmp_path, testtype):
     parser = forceqform.get_parser()
     args = parser.parse_args([str(i1), str(tmp_path / 'out.nii')])
     if testtype != 'none':
-        forceqform.main(args.input_file, args.output_file)
+        forceqform.forceqform(args.input_file, args.output_file)
     else:
         with pytest.raises(RuntimeError):
-            forceqform.main(args.input_file, args.output_file)
+            forceqform.forceqform(args.input_file, args.output_file)
         return
     nout = nibabel.load(str(args.output_file))
     assert np.all(nout.affine == affine)
