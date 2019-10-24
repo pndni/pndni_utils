@@ -10,6 +10,7 @@ setup(
         'pandas>=0.24',
         'nibabel>=2.4.0',
         'numpy>=1.16.3',
+        'h5py',
     ],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
@@ -26,6 +27,7 @@ setup(
             'flattenhtml = pndni.flattenhtml:main',
             'allequal = pndni.all_equal:main',
             'forceqform = pndni.forceqform:main',
+            'minc_default_dircos = pndni.minc_default_dircos:main'
         ],
     },
 )

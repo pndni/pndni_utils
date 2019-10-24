@@ -168,6 +168,15 @@ labels2probmaps
    :func: get_parser
 
 
+minc_default_dircos
+===================
+
+.. argparse::
+   :prog: minc_default_dircos
+   :module: pndni.minc_default_dircos
+   :func: get_parser
+
+
 mnclabel2niilabel
 =================
 
