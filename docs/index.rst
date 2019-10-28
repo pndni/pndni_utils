@@ -186,6 +186,12 @@ mnclabel2niilabel
    :func: get_parser
 
 
+niftiheader
+===========
+
+Output the nifti header using hexdump
+
+
 swaplabels
 =============
 

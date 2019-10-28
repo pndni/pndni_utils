@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -eu
+
+fmt='"dim = " 8 / 2  " %d" "\n" "intent =" 3 / 4 " %f" "\n" 1 / 2 "intent code = %d\n" 1 / 2 "datatype = %d\n" 1 / 2 "bitpix = %d\n" 1 / 2 "slice_start = %d\n" "pixdim =" 8 / 4 " %f" "\n" 1 / 4 "vox_offset = %f\n" 1 / 4 "scl_slope  = %f\n" 1 / 4 "scl_inter  = %f\n" 1 / 2 "slice_end = %d\n" 1 / 1 "slice_code  = %d\n" 1 / 1 "xyzt_units = %d\n" 1 / 4 "cal_max = %f\n" 1 / 4 "cal_min = %f\n" 1 / 4 "slice_duration = %f\n" 1 / 4 "toffset = %f\n" 1 / 4 "glmax = %d\n" 1 / 4 "glmin = %d\n" 1 / 80 "descrip = %s\n" 1 / 24 "aux_file = %s\n" 1 / 2 "qform_code  = %d\n" 1 / 2 "sform_code  = %d\n" 1 / 4 "quatern_b  = %f\n" 1 / 4 "quatern_c  = %f\n" 1 / 4 "quatern_d  = %f\n" 1 / 4 "qoffset_x  = %f\n" 1 / 4 "qoffset_y  = %f\n" 1 / 4 "qoffset_z  = %f\n" "srow_x =" 4 / 4 " %f" "\n" "srow_y =" 4 / 4 " %f" "\n" "srow_z =" 4 / 4 " %f" "\n" 1 / 16 "intent_name = %s\n" 1 / 4 "magic = %s\n"'
+
+if [ "$(file -b $1 | cut -d ' ' -f 1)" == "gzip" ]
+then
+    startcmd="gunzip -c"
+else
+    startcmd="cat"
+fi
+
+$startcmd "$1" | head -c 348 | tail -c +41 | hexdump -e "$fmt"
