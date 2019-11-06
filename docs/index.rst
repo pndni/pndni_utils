@@ -133,8 +133,16 @@ Creates a starting point readme file. Calling ``create_readme file1 file2 file3`
 
 
 
-flattenhtml
+convertpoints
 =============
+
+.. argparse::
+   :prog: convertpoints
+   :module: pndni.convertpoints
+   :func: get_parser
+	  
+flattenhtml
+===========
 
 .. argparse::
    :prog: flattenhtml

@@ -27,7 +27,9 @@ setup(
             'flattenhtml = pndni.flattenhtml:main',
             'allequal = pndni.all_equal:main',
             'forceqform = pndni.forceqform:main',
-            'minc_default_dircos = pndni.minc_default_dircos:main'
+            'minc_default_dircos = pndni.minc_default_dircos:main',
+            'stats = pndni.stats:main',
+            'convertpoints = pndni.convertpoints:main'
         ],
     },
 )
