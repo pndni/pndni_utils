@@ -31,10 +31,10 @@ Points =
     with open(tmp_path / 'slicer.fcsv', 'w', newline='') as f:
         f.write('# Markups fiducial file version = 4.10.2\n')
         f.write('# CoordinateSystem = 0\n')
-        f.write('# columns = id,x,y,z\n')
+        f.write('# columns = id,x,y,z,label\n')
         writer = csv.writer(f)
-        writer.writerow([10, 1.1, 1.2, 1.3])
-        writer.writerow([20, 2.1, 2.2, 2.3])
+        writer.writerow([0, 1.1, 1.2, 1.3, 10])
+        writer.writerow([1, 2.1, 2.2, 2.3, 20])
     return tmp_path
 
 

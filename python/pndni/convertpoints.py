@@ -11,7 +11,7 @@ SinglePoint = namedtuple('SinglePoint', ['x', 'y', 'z', 'index'])
 class Points(object):
     _FCSV_HEADER = ['# Markups fiducial file version = 4.10.2',
                     '# CoordinateSystem = 0',  # RAS
-                    '# columns = id,x,y,z']
+                    '# columns = id,x,y,z,label']
 
     def __init__(self, points):
         """points is a list or tuple of SinglePoints"""
@@ -53,8 +53,8 @@ class Points(object):
         with open(outfile, 'w', newline='') as f:
             f.write('\n'.join(self._FCSV_HEADER) + '\n')
             writer = csv.writer(f)
-            for point in self.points:
-                writer.writerow([point.index, point.x, point.y, point.z])
+            for i, point in enumerate(self.points):
+                writer.writerow([i, point.x, point.y, point.z, point.index])
 
     @classmethod
     def from_fcsv(cls, infile):
@@ -70,7 +70,7 @@ class Points(object):
             points = [SinglePoint(float(row[1]),
                                   float(row[2]),
                                   float(row[3]),
-                                  int(row[0]))
+                                  int(row[4]))
                       for row in reader]
             return cls(points)
 
@@ -195,7 +195,8 @@ it is more restrictive than the linked specification. All information besides x,
 are ignored. Coordinates are in RAS.
 
 A `slicer fiducial file <https://www.slicer.org/wiki/Documentation/Nightly/Modules/Markups#File_Format>`_ (extension .fcsv')
-Containing only the columns id, x, y, and z (int, float, float, and float, respectively). Coordinates are in RAS.
+Containing only the columns id, x, y, z, label (int, float, float, float, and int, respectively). Id is ignored.
+Coordinates are in RAS.
                         """)
     parser.add_argument('outfile', type=str,
                         help='Output file. Format determined by extension. See infile.')
