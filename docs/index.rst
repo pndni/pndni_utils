@@ -200,6 +200,15 @@ niftiheader
 Output the nifti header using hexdump
 
 
+stats
+=====
+
+.. argparse::
+   :prog: stats
+   :module: pndni.stats
+   :func: get_parser
+
+	  
 swaplabels
 =============
 
