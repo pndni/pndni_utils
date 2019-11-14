@@ -11,6 +11,7 @@ setup(
         'nibabel>=2.4.0',
         'numpy>=1.16.3',
         'h5py',
+        'netCDF4',
     ],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
@@ -29,7 +30,8 @@ setup(
             'forceqform = pndni.forceqform:main',
             'minc_default_dircos = pndni.minc_default_dircos:main',
             'stats = pndni.stats:main',
-            'convertpoints = pndni.convertpoints:main'
+            'convertpoints = pndni.convertpoints:main',
+            'minc_force_regular_spacing = pndni.minc_force_regular_spacing:main',
         ],
     },
 )

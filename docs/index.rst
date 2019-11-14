@@ -185,6 +185,15 @@ minc_default_dircos
    :func: get_parser
 
 
+minc_force_regular_spacing
+==========================
+
+.. argparse::
+   :prog: minc_force_regular_spacing
+   :module: pndni.minc_force_regular_spacing
+   :func: get_parser
+
+
 mnclabel2niilabel
 =================
 
