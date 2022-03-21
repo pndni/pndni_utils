@@ -12,6 +12,7 @@ setup(
         'numpy>=1.16.3',
         'h5py',
         'netCDF4',
+        'scipy',
         'pytest'
     ],
     extra_require={
