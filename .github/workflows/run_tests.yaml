@@ -63,8 +63,7 @@ jobs:
       - name: create environment
         run: |
           pip install virtualenv
-          echo $RUNNER_OS
-          if [ "$RUNNER_OS" == "macOS-latest" ]; then
+          if [ "$RUNNER_OS" == "macOS" ]; then
                 echo "Hello world"
                 export PATH=$PATH:"/Library/Frameworks/Python.framework/Versions/2.7/bin"
           fi
