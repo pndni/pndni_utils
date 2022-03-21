@@ -64,7 +64,7 @@ jobs:
         run: |
           pip install virtualenv
           if [ "$RUNNER_OS" == "MacOS" ]; then
-                echo "${HOME}/Library/Python/2.7/bin" >> $GITHUB_PATH
+                echo "/Library/Frameworks/Python.framework/Versions/2.7/bin" >> $GITHUB_PATH
           fi
           virtualenv .venv
       # Step 4: List python env info packages
