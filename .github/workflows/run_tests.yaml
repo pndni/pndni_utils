@@ -71,7 +71,9 @@ jobs:
                 brew install cmake
                 cmake hdf5
                 ls CMakeFiles
+                export PATH=$PATH:"~/CMakeFiles"
                 brew install c-blosc
+                pwd
                 ls /usr/local/
           fi
           virtualenv .venv
