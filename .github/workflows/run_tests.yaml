@@ -3,7 +3,6 @@
 
 # Official DOc on GitHub Workflow Syntax: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
-# Conda based env testing: https://github.com/conda-incubator/setup-miniconda
 name: Run tests
 
 on:
@@ -59,22 +58,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.6
-      # Step 3: Install environment.
-      - name: create environment
+      # Step 3: Create virtual environment.
+      - name: Create virtual environment
         run: |
           pip install virtualenv
           if [ "$RUNNER_OS" == "macOS" ]; then
-                echo "Hello world"
                 export PATH=$PATH:"/Library/Frameworks/Python.framework/Versions/2.7/bin"
-                ls /usr/local/
-                git clone https://github.com/HDFGroup/hdf5.git
-                brew install cmake
-                cmake hdf5
-                ls CMakeFiles
-                export PATH=$PATH:"~/CMakeFiles"
-                brew install c-blosc
-                pwd
-                ls /usr/local/
           fi
           virtualenv .venv
       # Step 4: List python env info packages
