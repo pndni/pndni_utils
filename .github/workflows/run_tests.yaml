@@ -67,7 +67,7 @@ jobs:
                 echo "Hello world"
                 export PATH=$PATH:"/Library/Frameworks/Python.framework/Versions/2.7/bin"
                 ls /usr/local/
-                git clone git clone https://github.com/HDFGroup/hdf5.git
+                git clone https://github.com/HDFGroup/hdf5.git
                 brew install cmake
                 cmake hdf5
                 ls CMakeFiles
