@@ -67,7 +67,11 @@ jobs:
                 echo "Hello world"
                 export PATH=$PATH:"/Library/Frameworks/Python.framework/Versions/2.7/bin"
                 ls /usr/local/
-                brew install hdf5 c-blosc
+                git clone git clone https://github.com/HDFGroup/hdf5.git
+                brew install cmake
+                cmake hdf5
+                ls CMakeFiles
+                brew install c-blosc
                 ls /usr/local/
           fi
           virtualenv .venv
