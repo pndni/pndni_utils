@@ -63,7 +63,7 @@ jobs:
       - name: create environment
         run: |
           pip install virtualenv
-          if [ "$RUNNER_OS" == "MacOS" ]; then
+          if [ "$RUNNER_OS" == "macOS-latest" ]; then
                 echo "/Library/Frameworks/Python.framework/Versions/2.7/bin" >> $GITHUB_PATH
           fi
           virtualenv .venv
