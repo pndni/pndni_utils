@@ -12,9 +12,9 @@ setup(
         'numpy>=1.16.3',
         'h5py',
         'netCDF4',
+        'scipy',
+        'pytest'
     ],
-    setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
     extra_require={
         'doc': ['Sphinx', 'sphinx-argparse', 'sphinx-rtd-theme']
     },
