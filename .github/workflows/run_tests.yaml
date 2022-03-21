@@ -61,7 +61,12 @@ jobs:
           python-version: 3.6
       # Step 3: Install environment.
       - name: create environment
-        run: pip3 install --user virtualenv && virtualenv .venv
+        run: |
+          pip install virtualenv
+          if [ "$RUNNER_OS" == "MacOS" ]; then
+                echo "${HOME}/Library/Python/2.7/bin" >> $GITHUB_PATH
+          fi
+          virtualenv .venv
       # Step 4: List python env info packages
       - name: Python packages info
         # List
