@@ -66,6 +66,7 @@ jobs:
           if [ "$RUNNER_OS" == "macOS" ]; then
                 echo "Hello world"
                 export PATH=$PATH:"/Library/Frameworks/Python.framework/Versions/2.7/bin"
+                brew install hdf5 netcdf4
           fi
           virtualenv .venv
       # Step 4: List python env info packages
