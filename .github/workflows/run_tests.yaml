@@ -61,7 +61,7 @@ jobs:
           python-version: 3.6
       # Step 3: Install environment.
       - name: create environment
-        run: pip install --user virtualenv && virtualenv .venv
+        run: pip3 install --user virtualenv && virtualenv .venv
       # Step 4: List python env info packages
       - name: Python packages info
         # List
